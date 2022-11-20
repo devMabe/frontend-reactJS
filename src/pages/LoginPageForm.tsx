@@ -33,6 +33,10 @@ function LoginPageForm() {
 
     if (response && response.error) {
       setSucces({message: ""});
+      setCredentials({
+        email: "",
+        password: ""
+      })
       setError(response.error);
     } else {
       setUserLogger(response);
@@ -52,6 +56,7 @@ function LoginPageForm() {
       <div className="wrapper fadeInDown">
         <div id="formContent">
           <div className="fadeIn first">
+            
             <img src={logo} id="icon" alt="User Icon" />
           </div>
 
@@ -65,6 +70,7 @@ function LoginPageForm() {
               required
               onChange={handleInputChange}
               value={credentials.email}
+              
             />
             <input
               type="password"
@@ -77,7 +83,7 @@ function LoginPageForm() {
               value={credentials.password}
               min="6"
             />
-            <input type="submit" className="fadeIn fourth" value="Login" />
+            <input type="submit" className="fadeIn fourth" value="Inicar" />
           </form>
 
           <Link className="underlineHover" to="/register">

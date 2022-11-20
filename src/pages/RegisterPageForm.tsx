@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { onRegister } from "../auth/auth.api";
-import {NavLink} from 'react-router-dom';
-
+import { Link } from "react-router-dom";
+import logo from "../assets/img/usuario.png";
 type HandleInputChange = ChangeEvent<HTMLInputElement>;
 
 function RegisterPageForm() {
@@ -16,53 +16,101 @@ function RegisterPageForm() {
     setData({ ...data, [name]: value });
   };
   const [error, setError] = useState("");
-
+  const [succes, setSucces] = useState({
+    message: "",
+  });
   const register = async (event: React.FormEvent) => {
     event.preventDefault();
-    
 
     const response = await onRegister(data);
 
     if (response && response.error) {
+      setSucces({
+        message: "",
+      });
+      setData({
+        name: "",
+        password: "",
+        email: ""
+      })
       setError(response.error);
+      
+    } else {
+      setError("")
+      setData({
+        email: "",
+        password: "",
+        name: "",
+      });
+      setSucces({
+        message: "¡Cuenta creada correctamente!",
+      });
     }
   };
 
   return (
-    <form onSubmit={register}>
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        placeholder="Correo Electronico"
-        name="email"
-        value={data.email}
-        onChange={handleInputChange}
-        required
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        value={data.password}
-        placeholder="Contraseña"
-        name="password"
-        onChange={handleInputChange}
-        required
-      />
-      
+    <>
+      <div className="wrapper fadeInDown">
+        <div id="formContent">
+        <h3 className="mt-3">Crea tu cuenta</h3>
+          <div className="fadeIn first">
+            <img src={logo}  id="iconUser" alt="User Icon" />
+          </div>
 
-      <label htmlFor="name">Name</label>
-      <input
-        type="text"
-        placeholder="Nombre"
-        name="name"
-        value={data.name}
-        onChange={handleInputChange}
-        required
-      />
-      <button type="submit">Register</button>
-      <NavLink to="/"> ¿Tienes cuenta ? ¡Inicia sesión aquí!</NavLink>
-      {error.length > 0 && <p>{error}</p>}
-    </form>
+          <form onSubmit={register}>
+            <input
+              type="email"
+              id="email"
+              className="fadeIn second"
+              name="email"
+              placeholder="Correo electronico..."
+              required
+              onChange={handleInputChange}
+              value={data.email}
+            />
+
+            <input
+              type="text"
+              id="text"
+              className="fadeIn second"
+              name="name"
+              placeholder="Nombre completo..."
+              required
+              onChange={handleInputChange}
+              value={data.name}
+            />
+
+            <input
+              type="password"
+              id="password"
+              className="fadeIn third"
+              name="password"
+              required
+              placeholder="Contraseña..."
+              onChange={handleInputChange}
+              value={data.password}
+              minLength={6}
+            />
+            <input type="submit" className="fadeIn fourth" value="Crear cuenta" />
+          </form>
+
+          <Link className="underlineHover" to="/">
+            ¿Tienes cuenta? ! Inicia sesión aquí !
+          </Link>
+          {error.length > 0 && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+
+          {succes.message !== "" && (
+            <div className="alert alert-success" role="alert">
+              {succes.message}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
