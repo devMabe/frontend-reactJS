@@ -1,7 +1,6 @@
 import "../assets/css/Login.css";
 import { onGreetings } from "../auth/auth.api";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 export function ButtonGrettings(props: any) {
 
   const [error, setError] = useState("");
