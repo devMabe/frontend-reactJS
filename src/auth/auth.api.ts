@@ -1,17 +1,17 @@
 import Axios, { AxiosRequestConfig } from "axios";
-
+import { API_BASE_URL } from '../config';
 export interface Credentials {
   email: string;
   password: string;
   name?:string;
 }
 
-
+//https://firebase-auth-backend.herokuapp.com
 
 export const onLogin = async (data: Credentials) => {
   const requestConfig: AxiosRequestConfig = {
     method: "post",
-    url: "https://firebase-auth-backend.herokuapp.com/login", 
+    url: API_BASE_URL+"/login", 
     data,
   };
 
@@ -27,11 +27,31 @@ export const onLogin = async (data: Credentials) => {
 };
 
 
+export const onGreetings = async (token: string) => {
+  let headers = {
+    "Content-type": "application/json; charset=UTF-8",
+    "Authorization": 'Bearer ' + token
+  };
+  const requestConfig: AxiosRequestConfig = {
+    method: "get",
+    url: API_BASE_URL+"/greetings",
+    headers: headers
+  }
+
+  try {
+    const { data: response}  = await Axios.request(requestConfig); 
+    console.log();
+    return { response }
+  } catch (e:any) {
+    return { error: e.response }
+  }
+}
+
 
 export const onRegister = async (data: Credentials) => {
   const requestConfig: AxiosRequestConfig = {
     method: "post",
-    url: "https://firebase-auth-backend.herokuapp.com/register",
+    url: API_BASE_URL+"/register",
     data,
   };
 
